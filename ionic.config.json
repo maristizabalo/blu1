@@ -1,0 +1,7 @@
+{
+  "name": "blu-1",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

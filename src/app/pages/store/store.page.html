@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-button size="large" color="danger" fill="clear" shape="round" slot="end" routerLink="/home">
+      <ion-icon class="" name="exit"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="bg-dark ion-padding bg-dark-all">
+    <ion-button class="mt-2" (click)="registro=!registro" expand="full"  shape="round" color="success">
+      <ion-icon name="add-circle-outline"></ion-icon>Registrar huella
+    </ion-button>
+    <div *ngIf="registro">
+      <ion-item>
+        <ion-label position="floating">ID <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input  type="number" shape="round"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nombre<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input  type="text"></ion-input>
+      </ion-item>
+      <ion-button class="d-flex justify-content-center" color="success" type="submit" >
+        Agregar
+      </ion-button>
+    </div>
+    <table class="table mt-5 text-center">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col-2">ID</th>
+          <th scope="col-6">Nombre</th>
+          <th scope="col-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="thead-light">
+        <tr>
+          <th scope="col-2">1</th>
+          <th scope="col-6">Maicol</th>
+          <th scope="col-4">
+            <ion-button (click)="onClick()" expand="full" fill="clear" shape="round">
+              <ion-icon color="warning" name="create"></ion-icon>
+            </ion-button>
+            <ion-button (click)="onClick()" expand="full" fill="clear" shape="round">
+              <ion-icon color="danger" name="trash"></ion-icon>
+            </ion-button>
+          </th>
+
+        </tr>
+    </table>
+  </div>
+</ion-content>

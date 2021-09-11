@@ -1,0 +1,24 @@
+<ion-header>
+
+  <ion-toolbar color="dark">
+    <ion-title class="titulo-principal">Blu1</ion-title>
+    <ion-button size="large" fill="clear" shape="round" slot="end" routerLink="/login">
+      <ion-icon class="" name="person"></ion-icon>
+    </ion-button>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-slides pager="true" class="slide-full background" [options]="slideOpts">
+    <ion-slide *ngFor="let item of list">
+      <div class="slide-full">
+        <img [src]="item.img" class="slide-image img">
+        <h2 class="subtitulo">{{ item.titulo }}</h2>
+        <p class="normal">{{ item.desc }}</p> 
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>

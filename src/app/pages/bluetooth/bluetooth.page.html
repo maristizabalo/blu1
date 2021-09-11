@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-button size="large" color="danger" fill="clear" shape="round" slot="end" routerLink="/home">
+      <ion-icon class="" name="exit"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+    <div class="bg-dark ion-padding bg-dark-all">
+    <ion-button expand="full"  shape="round" class="submit-button mt-2" (click)="listPairedDevices()">
+      <ion-icon name="refresh"></ion-icon>&nbsp;Actualizar Dispositivos</ion-button>
+    <ion-row>
+      <ion-col>
+        <ion-list [(ngModel)]="pairedDeviceID" *ngIf="listToggle">
+            <ion-radio-group name="auto" value="tesla">
+              <ion-list-header>
+                <ion-label>Elige uno</ion-label>
+              </ion-list-header>
+              <ion-item *ngFor="let i of pairedList;let j=index">
+                <ion-label>{{i.name}}</ion-label>
+                <ion-radio value="{{j}}"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-button expand="block" shape="round" class="submit-button" *ngIf="listToggle" (click)="selectDevice()">
+      <ion-icon name="bluetooth"></ion-icon>&nbsp;Conectar</ion-button>
+  </div>
+  </ion-content>
