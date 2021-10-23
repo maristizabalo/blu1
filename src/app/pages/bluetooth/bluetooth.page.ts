@@ -1,6 +1,8 @@
 import { Component} from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { FirebaseauthService } from 'src/app/services/firebaseauth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bluetooth',
@@ -14,8 +16,18 @@ export class BluetoothPage{
   pairedDeviceId: number = 0;
   dataSend = "";
 
-  constructor(public navCtrl: NavController, private alertCtrl: AlertController, private bluetoothSerial: BluetoothSerial, private toastCtrl: ToastController){ 
+  constructor(public navCtrl: NavController,
+              private alertCtrl: AlertController, 
+              private bluetoothSerial: BluetoothSerial, 
+              private toastCtrl: ToastController,
+              private firebaseAuth: FirebaseauthService,
+              private router: Router){ 
     this.checkBluetoothEnabled();
+  }
+
+  logOut(){
+    this.firebaseAuth.logout();
+    this.router.navigate(['/home']);
   }
 
   checkBluetoothEnabled() {

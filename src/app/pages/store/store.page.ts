@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FirebaseauthService } from 'src/app/services/firebaseauth.service';
 
 @Component({
   selector: 'app-store',
@@ -9,9 +11,15 @@ export class StorePage implements OnInit {
 
   registro:boolean = false;
 
-  constructor() { }
+  constructor(private firebaseAuth: FirebaseauthService,
+              private router: Router) { }
 
   ngOnInit() {
+  }
+
+  logOut(){
+    this.firebaseAuth.logout();
+    this.router.navigate(['/home']);
   }
 
 }
