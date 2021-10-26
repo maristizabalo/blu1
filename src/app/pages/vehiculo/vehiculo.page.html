@@ -53,7 +53,7 @@
 
         </tr>
     </table> -->
-    <table class="table mt-5 table-striped">
+    <table class="table mt-5 text-center">
       <thead class="thead-dark">
         <tr>
           <th>ID</th>
@@ -61,13 +61,13 @@
           <th>ACCIONES</th>
         </tr>
       </thead>
-      <tbody class="thead-light">
+      <tbody class="bg-light">
         <tr *ngFor="let huella of huellas">
           <td>{{ huella.id }}</td>
           <td>{{ huella.nombre }}</td>
           <td>
-            <i class="fas fa-edit fa-lg text-info mr-2" [routerLink]="['/editEmpleados/', empleado.id]"></i>
-            <i (click)="eliminarEmpleado(empleado.id)" class="fas fa-trash-alt fa-lg text-danger"></i>
+            <i class="fas fa-edit fa-lg text-info mr-2" ></i>
+            <i class="fas fa-trash-alt fa-lg text-danger"></i>
           </td>
         </tr>
       </tbody>

@@ -15,43 +15,38 @@ export class VehiculoPage implements OnInit{
 
   huellas: any[] = [];
   newHuella: Huellas ={
-    id: null,
+    id: 0,
     nombre: '',
     fecha: new Date()
   };
 
+  uid= '';
   path = "huellas/";
-  uid='';
   registro:boolean = false;
 
   constructor(public firebaseAuth: FirebaseauthService, public firestore: FirestoreService,private router: Router){ 
-                this.firebaseAuth.stateAuth().subscribe(res =>{
-                  if(res !== null){
-                    this.uid = res.uid;
-                  }else{
-                    console.log('No tienes datos');
-                  }
-                });
+    this.firebaseAuth.stateAuth().subscribe(res =>{
+      if(res !== null){
+        this.uid = res.uid;
+        console.log(this.uid);
+      }else{
+        console.log('No tienes datos');
+      }
+      this.getHuellas()
+    });
   }
 
   ngOnInit(): void {
-    this.getHuellas()
+    
   }
 
-  async getHuellas(){
-    const uid = await this.firebaseAuth.getUid();
-    const path = 'Usuarios/'+ uid +'/huellas';
+  getHuellas(){
+    const uid = this.firebaseAuth.getUid(); 
+    /* const path = 'Usuarios/'+ uid +'/huellas/'; */
+    const path = 'Usuarios/'+ this.uid +'/'+ this.path;
     this.firestore.getCollection(path).subscribe(data => {
-      this.huellas = [];
-      data.forEach((element:any) => {
-       /* console.log(element.payload.doc.id);
-        console.log(element.payload.doc.data()); */
-        this.huellas.push({
-          id: element.payload.doc.id,
-          ...element.payload.doc.data()
-        })
-      });
-      console.log(this.huellas);
+      console.log(data);
+      this.huellas = data;
     })
   }
 
@@ -60,7 +55,8 @@ export class VehiculoPage implements OnInit{
       id: this.idn,
       nombre: this.name
     }; */
-    const path = 'Usuarios/'+ this.uid +'/'+ this.path;
+    const uid = this.firebaseAuth.getUid(); 
+    const path = 'Usuarios/'+ uid +'/'+ this.path;
     const id = this.firestore.getId();
     this.firestore.createDoc(this.newHuella, path, id);
   }
