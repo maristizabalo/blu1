@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { Huellas } from 'src/app/models';
 import { FirebaseauthService } from 'src/app/services/firebaseauth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
-
+import { ToastrService } from 'ngx-toastr';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 @Component({
   selector: 'app-vehiculo',
@@ -20,30 +20,49 @@ export class VehiculoPage implements OnInit{
     fecha: new Date()
   };
 
+  bluetooth:boolean = false;
   uid= '';
   path = "huellas/";
   registro:boolean = false;
+  dataSend: string = "";
 
-  constructor(public firebaseAuth: FirebaseauthService, public firestore: FirestoreService,private router: Router){ 
-    this.firebaseAuth.stateAuth().subscribe(res =>{
-      if(res !== null){
-        this.uid = res.uid;
-        console.log(this.uid);
-      }else{
-        console.log('No tienes datos');
-      }
-      this.getHuellas()
-    });
-  }
+  constructor(public firebaseAuth: FirebaseauthService,
+              public firestore: FirestoreService,
+              private router: Router, 
+              private toastr: ToastrService,
+              private bluetoothSerial: BluetoothSerial,)
+    { 
+      this.firebaseAuth.stateAuth().subscribe(res =>{
+        if(res !== null){
+          this.uid = res.uid;
+          console.log(this.uid);
+        }else{
+          console.log('No tienes datos');
+         }
+        this.getHuellas();
+        this.bluetoothSerial.isConnected().then(res => {
+          console.log("BT Conectado");
+          this.bluetooth = true;
+        },error => {
+          console.log("BT No conectado");
+          this.bluetooth = false;
+        });
+      });
+
+      
+
+
+
+    }
 
   ngOnInit(): void {
-    
   }
 
   getHuellas(){
     const uid = this.firebaseAuth.getUid(); 
     /* const path = 'Usuarios/'+ uid +'/huellas/'; */
-    const path = 'Usuarios/'+ this.uid +'/'+ this.path;
+    const path = 'Usuarios/'+ uid +'/'+ this.path;
+
     this.firestore.getCollection(path).subscribe(data => {
       console.log(data);
       this.huellas = data;
@@ -58,7 +77,22 @@ export class VehiculoPage implements OnInit{
     const uid = this.firebaseAuth.getUid(); 
     const path = 'Usuarios/'+ uid +'/'+ this.path;
     const id = this.firestore.getId();
-    this.firestore.createDoc(this.newHuella, path, id);
+    this.dataSend+='\n';
+    this.toastr.info(this.dataSend);
+
+    this.bluetoothSerial.write(this.dataSend).then(success => {
+      this.toastr.info(success);
+      this.firestore.createDoc(this.newHuella, path, id).then(res => {
+        this.toastr.success('Guardado!', 'Exioso!');
+      })
+    }, error => {
+      this.toastr.info(error)
+    });
+    /* this.firestore.createDoc(this.newHuella, path, id).then(res => {
+      this.toastr.success('Guardado!', 'Exioso!');
+    }).catch(error => {
+      this.toastr.error('Error', 'Bad')
+    }); */
   }
   
   logOut(){
