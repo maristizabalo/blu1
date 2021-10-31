@@ -20,34 +20,37 @@ export class VehiculoPage implements OnInit{
     fecha: new Date()
   };
 
-  bluetooth:boolean = false;
-  uid= '';
-  path = "huellas/";
+  bluetooth:boolean = false;/* 
+  uid= ''; */
+  
   registro:boolean = false;
   dataSend: string = "";
-
+  uid = this.firebaseAuth.getUid();
+  path = 'Usuarios/TSv2HYT9qcUTyMy7agsURByyJNs2/huellas/';
   constructor(public firebaseAuth: FirebaseauthService,
               public firestore: FirestoreService,
               private router: Router, 
               private toastr: ToastrService,
               private bluetoothSerial: BluetoothSerial,)
     { 
-      this.firebaseAuth.stateAuth().subscribe(res =>{
+      /* this.firebaseAuth.stateAuth().subscribe(res =>{
         if(res !== null){
           this.uid = res.uid;
           console.log(this.uid);
         }else{
           console.log('No tienes datos');
-         }
-        this.getHuellas();
-        this.bluetoothSerial.isConnected().then(res => {
+        }
+      }); */
+        
+      this.getHuellas();
+        /*this.bluetoothSerial.isConnected().then(res => {
           console.log("BT Conectado");
           this.bluetooth = true;
         },error => {
           console.log("BT No conectado");
           this.bluetooth = false;
         });
-      });
+      }); */
 
       
 
@@ -59,14 +62,26 @@ export class VehiculoPage implements OnInit{
   }
 
   getHuellas(){
-    const uid = this.firebaseAuth.getUid(); 
+    console.log(this.uid)
+    const uid = this.firebaseAuth.getUid();
+    const path = 'Usuarios/'+ this.uid  +'/huellas/';
     /* const path = 'Usuarios/'+ uid +'/huellas/'; */
-    const path = 'Usuarios/'+ uid +'/'+ this.path;
+    /* const path = '/Usuarios/'+ this.uid +'/huellas/'; */
 
     this.firestore.getCollection(path).subscribe(data => {
+      this.huellas = [];
+      data.forEach((element:any) => {
+        this.huellas.push({
+          id: element.payload.doc.id,
+          ...element.payload.doc.data()
+        })
+      });
+    })
+    
+    /* .getCollection(this.path).subscribe(data => {
       console.log(data);
       this.huellas = data;
-    })
+    }) */
   }
 
   guardarHuellas(){
@@ -75,12 +90,12 @@ export class VehiculoPage implements OnInit{
       nombre: this.name
     }; */
     const uid = this.firebaseAuth.getUid(); 
-    const path = 'Usuarios/'+ uid +'/'+ this.path;
+    const path = 'Usuarios/'+ this.uid +'/'+ this.path;
     const id = this.firestore.getId();
     this.dataSend+='\n';
     this.toastr.info(this.dataSend);
 
-    this.bluetoothSerial.write(this.dataSend).then(success => {
+    this.bluetoothSerial.write("1").then(success => {
       this.toastr.info(success);
       this.firestore.createDoc(this.newHuella, path, id).then(res => {
         this.toastr.success('Guardado!', 'Exioso!');
@@ -102,4 +117,3 @@ export class VehiculoPage implements OnInit{
   
   
 }
-
