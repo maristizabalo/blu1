@@ -72,6 +72,7 @@ export class VehiculoPage implements OnInit{
         console.log('No tienes datos');
       }
     });
+<<<<<<< HEAD
   }
 
   activar(){
@@ -89,6 +90,8 @@ export class VehiculoPage implements OnInit{
 
   modoAntirobo(){
     this.toastr.warning("Modo Antirobo habilitado");
+=======
+>>>>>>> 3bba843db0831c18ed05d5aa49942eb306dcbadb
   }
 
   getHuellas(){
@@ -111,11 +114,18 @@ export class VehiculoPage implements OnInit{
   registroHuella(){
     this.registro = true;
     this.bluetoothSerial.write("2").then(success => {
+<<<<<<< HEAD
       this.toastr.info("Hey que numero de huella?");
     },error =>{
       this.registro = true;
       this.toastr.error("No se ha podido realizar un registro");
     });
+=======
+      this.toastr.info("Hey que numero de huella?")
+    },error =>{
+
+    })
+>>>>>>> 3bba843db0831c18ed05d5aa49942eb306dcbadb
   }
 
   guardarHuellas(){
@@ -129,7 +139,11 @@ export class VehiculoPage implements OnInit{
     this.dataSend+='\n';
     this.toastr.info(this.dataSend);
 
+<<<<<<< HEAD
     this.bluetoothSerial.write(String(this.newHuella.id)).then(success => {
+=======
+    this.bluetoothSerial.write("").then(success => {
+>>>>>>> 3bba843db0831c18ed05d5aa49942eb306dcbadb
       this.toastr.info(success);
       this.firestore.createDoc(this.newHuella, path, id).then(res => {
         this.toastr.success('Guardado!', 'Exioso!');
@@ -153,6 +167,7 @@ export class VehiculoPage implements OnInit{
   }
 
   
+<<<<<<< HEAD
 
   
   handleData(data) {
@@ -260,4 +275,13 @@ interface pairedList {
 }
 
   
+=======
+>>>>>>> 3bba843db0831c18ed05d5aa49942eb306dcbadb
 
+  
+  handleData(data) {
+    //Montar aquí el sistema para tratar la entrada desde el dispositivo al que nos hemos conectado.
+    this.toastr.info(data);
+  }
+  
+}

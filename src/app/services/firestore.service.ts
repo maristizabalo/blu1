@@ -35,7 +35,7 @@ export class FirestoreService {
   }
 
   getCollection(path: string): Observable<any>{
-    const collection = this.database.collection(path);
-    return collection.snapshotChanges();
+    return this.database.collection(path, ref => ref.orderBy('id','asc')).snapshotChanges();
+    /* return collection.snapshotChanges(); */
   }
 }

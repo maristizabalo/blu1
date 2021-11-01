@@ -8,7 +8,10 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { FirebaseauthService } from 'src/app/services/firebaseauth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3bba843db0831c18ed05d5aa49942eb306dcbadb
 
 @Component({
   selector: 'app-bluetooth',
@@ -44,7 +47,7 @@ export class BluetoothPage {
         this.listPairedDevices();
       },
       (error) => {
-        this.showError('Por favor, activa el Bluetooth');
+        this.toastr.warning('Por favor, activa el Bluetooth');
       }
     );
   }
@@ -55,7 +58,7 @@ export class BluetoothPage {
         this.listToggle = true;
       },
       (error) => {
-        this.showError('Al parecer no tienes activo el bluetooth');
+        this.toastr.info('Al parecer no tienes activo el bluetooth');
         this.listToggle = false;
       }
     );
@@ -63,7 +66,7 @@ export class BluetoothPage {
   selectDevice() {
     let connectedDevice = this.pairedList[this.pairedDeviceId];
     if (!connectedDevice.address) {
-      this.showError('Selecciona un dispositivo al que conecterse');
+      this.toastr.error('Selecciona un dispositivo al que conecterse');
       return;
     }
     let address = connectedDevice.address;
@@ -74,10 +77,10 @@ export class BluetoothPage {
     this.bluetoothSerial.connect(address).subscribe(
       (success) => {
         this.deviceConnected();
-        this.showToast('Conectado correctamente');
+        this.toastr.success('Conectado correctamente');
       },
       (error) => {
-        this.showError('No se ha podido conectar, algo ha fallado.');
+        this.toastr.warning('No se ha podido conectar, algo ha fallado.');
       }
     );
   }
