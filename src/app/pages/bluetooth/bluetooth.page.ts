@@ -7,6 +7,8 @@ import {
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { FirebaseauthService } from 'src/app/services/firebaseauth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-bluetooth',
@@ -25,7 +27,8 @@ export class BluetoothPage {
     private bluetoothSerial: BluetoothSerial,
     private toastCtrl: ToastController,
     private firebaseAuth: FirebaseauthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.checkBluetoothEnabled();
   }
@@ -95,7 +98,7 @@ export class BluetoothPage {
   }
   handleData(data) {
     //Montar aquí el sistema para tratar la entrada desde el dispositivo al que nos hemos conectado.
-    this.showToast(data);
+    this.toastr.info(data);
   }
   sendData(dataToSend: String) {
     this.dataSend = '\n';
